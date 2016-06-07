@@ -2,35 +2,23 @@
 using GalaSoft.MvvmLight.Command;
 using SimpleNotes.Models;
 using System;
+using System.ServiceModel.Channels;
 using System.Windows.Input;
 using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Data;
 
 namespace SimpleNotes.ViewModels
 {
-	class NewNoteViewModel : ViewModelBase
+	public class NewNoteViewModel : ViewModelBase
 	{
-		private string noteText;
-
-		public string NoteText
-		{
-			get
-			{
-				return noteText;
-			}
-			set
-			{
-				noteText = value;
-			}
-		}
+		public string NoteText { get; set; }
 		public DateTime CurrentDate { get; set; } = DateTime.Now;
 
 		public ICommand SaveNoteCommand { get; set; }
 		public ICommand CancelCreateNoteCommand { get; set; }
-
-		public event EventHandler<BackRequestedEventArgs> OnBackRequested;
 
 		public NewNoteViewModel()
 		{
@@ -46,7 +34,7 @@ namespace SimpleNotes.ViewModels
 			SaveNoteCommand = new RelayCommand(SaveNote);
 			CancelCreateNoteCommand = new RelayCommand(CancelCreateNote);
 
-			((App)App.Current).OnBackRequested += (sender, e) =>
+			((App)Application.Current).OnBackRequested += (sender, e) =>
 			{
 				if (!e.Handled)
 				{
@@ -70,7 +58,7 @@ namespace SimpleNotes.ViewModels
 			}
 		}
 
-		private async void CancelCreateNote()
+		public async void CancelCreateNote()
 		{
 			if(!string.IsNullOrEmpty(NoteText))
 			{

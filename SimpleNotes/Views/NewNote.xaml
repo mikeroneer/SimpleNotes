@@ -6,20 +6,23 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:SimpleNotes.ViewModels"
+    DataContext="{Binding Source={StaticResource Locator}, Path=NewNoteViewModel}"
     mc:Ignorable="d">
 
-    <Page.DataContext>
-        <viewModels:NewNoteViewModel/>
-    </Page.DataContext>
+    <!--<Page.DataContext>
+        <viewModels:NewNoteViewModel />
+    </Page.DataContext>-->
 
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Icon="Accept" 
                           Label="Save"
-                          Command="{Binding SaveNoteCommand}"/>
+                          Command="{Binding SaveNoteCommand}"
+                          IsTabStop="False"/>
             <AppBarButton Icon="Cancel"
                           Label="Cancel"
-                          Command="{Binding CancelCreateNoteCommand}"/>
+                          Command="{Binding CancelCreateNoteCommand}"
+                          IsTabStop="False"/>
         </CommandBar>
     </Page.BottomAppBar>
 

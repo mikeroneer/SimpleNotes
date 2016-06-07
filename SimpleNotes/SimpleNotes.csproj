@@ -105,6 +105,7 @@
     <Compile Include="ViewModels\ReadNotesViewModel.cs" />
     <Compile Include="ViewModels\SearchNoteViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Views\NewNote.xaml.cs">
       <DependentUpon>NewNote.xaml</DependentUpon>
     </Compile>
