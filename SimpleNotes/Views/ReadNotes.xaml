@@ -1,0 +1,27 @@
+﻿<Page
+    x:Class="SimpleNotes.Views.ReadNotes"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SimpleNotes.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:SimpleNotes.ViewModels"
+    mc:Ignorable="d">
+
+    <Page.DataContext>
+        <viewModels:ReadNotesViewModel/>
+    </Page.DataContext>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ListView ItemsSource="{Binding Notes}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0, 12, 0, 12">
+                        <TextBlock Text="{Binding CreationDate}" FontSize="10"/>
+                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="22"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>                  
+    </Grid>
+</Page>

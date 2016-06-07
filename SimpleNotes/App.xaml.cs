@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleNotes.Views;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -28,7 +30,10 @@ namespace SimpleNotes
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
+			Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
+				Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
+				Microsoft.ApplicationInsights.WindowsCollectors.Session);
+			this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
 
@@ -42,7 +47,7 @@ namespace SimpleNotes
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
+                //this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
             Frame rootFrame = Window.Current.Content as Frame;
@@ -63,7 +68,15 @@ namespace SimpleNotes
 
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
-            }
+
+				SystemNavigationManager.GetForCurrentView().BackRequested += AppBackRequested;
+
+				rootFrame.Navigated += (sender, args) =>
+				{
+					SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility
+						= rootFrame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
+				};
+			}
 
             if (e.PrelaunchActivated == false)
             {
@@ -79,12 +92,36 @@ namespace SimpleNotes
             }
         }
 
-        /// <summary>
-        /// Invoked when Navigation to a certain page fails
-        /// </summary>
-        /// <param name="sender">The Frame which failed navigation</param>
-        /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+		public event EventHandler<BackRequestedEventArgs> OnBackRequested;
+
+		private void AppBackRequested(object sender, BackRequestedEventArgs e)
+		{
+			Frame frame = Window.Current.Content as Frame;
+
+			/*if (frame.SourcePageType == typeof(NewNote))
+				return;*/
+
+			OnBackRequested?.Invoke(this, e);
+
+			if (!e.Handled)
+			{
+				// Default is to navigate back within the Frame
+				
+				if (frame.CanGoBack)
+				{
+					frame.GoBack();
+					// Signal handled so that system doesn't navigate back through app stack
+					e.Handled = true;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Invoked when Navigation to a certain page fails
+		/// </summary>
+		/// <param name="sender">The Frame which failed navigation</param>
+		/// <param name="e">Details about the navigation failure</param>
+		void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }

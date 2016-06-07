@@ -1,0 +1,33 @@
+﻿<Page
+    x:Class="SimpleNotes.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SimpleNotes"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:SimpleNotes.ViewModels"
+    mc:Ignorable="d">
+    
+    <Page.DataContext>
+        <viewModels:OverviewViewModel/>
+    </Page.DataContext>
+        
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Simple Notes" FontSize="36"/>
+        <ListView Grid.Row="1" ItemsSource="{Binding MenuItems}" SelectionChanged="OnMenuItemSelected"/>
+        <Image Grid.Row="2" 
+               Source="ms-appx:///Assets/mikeroneer-logo.jpg" 
+               VerticalAlignment="Bottom"
+               HorizontalAlignment="Center"/>
+        <HyperlinkButton Grid.Row="3" 
+                         HorizontalAlignment="Center" 
+                         Content="www.mikerocode.com" 
+                         NavigateUri="http://www.mikerocode.com"/>
+    </Grid>
+</Page>
