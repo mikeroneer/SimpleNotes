@@ -8,6 +8,6 @@ namespace SimpleNotes.Services
 {
 	public interface IInitializable
 	{
-		void Initialise(object parameter);
+		void Initialize(object parameter);
 	}
 }

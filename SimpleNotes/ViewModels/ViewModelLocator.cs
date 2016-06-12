@@ -11,7 +11,7 @@ namespace SimpleNotes.ViewModels
 	public class ViewModelLocator
 	{
 		public OverviewViewModel OverviewViewModel => ServiceLocator.Current.GetInstance<OverviewViewModel>();
-		public NewNoteViewModel NewNoteViewModel => ServiceLocator.Current.GetInstance<NewNoteViewModel>();
+		public NoteDetailsViewModel NewNoteViewModel => ServiceLocator.Current.GetInstance<NoteDetailsViewModel>();
 		public ReadNotesViewModel ReadNotesViewModel => ServiceLocator.Current.GetInstance<ReadNotesViewModel>();
 		public SettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<SettingsViewModel>();
 
@@ -19,7 +19,7 @@ namespace SimpleNotes.ViewModels
 		{
 			ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 			SimpleIoc.Default.Register<OverviewViewModel>();
-			SimpleIoc.Default.Register<NewNoteViewModel>();
+			SimpleIoc.Default.Register<NoteDetailsViewModel>();
 			SimpleIoc.Default.Register<ReadNotesViewModel>();
 			SimpleIoc.Default.Register<SettingsViewModel>();
 
@@ -31,7 +31,7 @@ namespace SimpleNotes.ViewModels
 		private static INavigationService RegisterNavigationService()
 		{
 			var service = new NavigationService();
-			service.Configure(Navigation.EditNote, typeof(NewNote));
+			service.Configure(Navigation.NoteDetails, typeof(NewNote));
 			service.Configure(Navigation.ReadNotes, typeof(ReadNotes));
 			service.Configure(Navigation.Settings, typeof(Settings));
 

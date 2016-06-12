@@ -99,22 +99,21 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Navigation.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToDateTimeOffsetConverter.cs" />
-    <Compile Include="Global.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\IDataService.cs" />
     <Compile Include="Services\IInitializable.cs" />
     <Compile Include="Services\IStorageService.cs" />
     <Compile Include="Services\LocalStorageService.cs" />
-    <Compile Include="ViewModels\NewNoteViewModel.cs" />
+    <Compile Include="ViewModels\NoteDetailsViewModel.cs" />
     <Compile Include="ViewModels\OverviewViewModel.cs" />
     <Compile Include="ViewModels\ReadNotesViewModel.cs" />
-    <Compile Include="ViewModels\SearchNoteViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Compile Include="Views\NewNote.xaml.cs">
-      <DependentUpon>NewNote.xaml</DependentUpon>
+    <Compile Include="Views\NoteDetails.xaml.cs">
+      <DependentUpon>NoteDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Overview.xaml.cs">
       <DependentUpon>Overview.xaml</DependentUpon>
@@ -122,9 +121,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\ReadNotes.xaml.cs">
       <DependentUpon>ReadNotes.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SearchNote.xaml.cs">
-      <DependentUpon>SearchNote.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -153,7 +149,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\NewNote.xaml">
+    <Page Include="Views\NoteDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -162,10 +158,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ReadNotes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SearchNote.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

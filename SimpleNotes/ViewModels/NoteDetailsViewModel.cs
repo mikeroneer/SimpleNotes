@@ -1,20 +1,14 @@
 ﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using SimpleNotes.Models;
 using System;
-using System.ServiceModel.Channels;
-using System.Windows.Input;
-using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 using GalaSoft.MvvmLight.Views;
 using SimpleNotes.Services;
 
 namespace SimpleNotes.ViewModels
 {
-	public class NewNoteViewModel : ViewModelBase, IInitializable
+	public class NoteDetailsViewModel : ViewModelBase, IInitializable
 	{
 		private readonly INavigationService navigationService;
 		private readonly IDataService dataService;
@@ -26,7 +20,7 @@ namespace SimpleNotes.ViewModels
 		private Mode mode;
 		private Note editNote;
 
-		public NewNoteViewModel(INavigationService navigationService, IDataService dataService)
+		public NoteDetailsViewModel(INavigationService navigationService, IDataService dataService)
 		{
 			this.navigationService = navigationService;
 			this.dataService = dataService;
@@ -41,7 +35,7 @@ namespace SimpleNotes.ViewModels
 			};
 		}
 
-		public void Initialise(object parameter)
+		public void Initialize(object parameter)
 		{
 			if (parameter is Note)
 			{
@@ -57,15 +51,6 @@ namespace SimpleNotes.ViewModels
 				mode = Mode.Create;
 				PageHeading = "Create Note";
 				CurrentDate = DateTime.Now;
-
-				/*DispatcherTimer dt = new DispatcherTimer();
-				dt.Interval = new TimeSpan(0, 0, 1);
-				dt.Tick += (sender, e) =>
-				{
-					CurrentDate = DateTime.Now;
-				};
-
-				dt.Start();*/
 			}
 		}
 
@@ -100,12 +85,17 @@ namespace SimpleNotes.ViewModels
 		{
 			if(!string.IsNullOrEmpty(NoteText))
 			{
-				var discardChangesDialog = new MessageDialog("You've worked on that note with love and now you'll kick it? Wouldn't you like to safe?", "Save changes?");
+				if (mode == Mode.Create || (mode == Mode.Edit && !editNote.Text.Equals(NoteText)))
+				{
+					var saveChangesDialog =
+						new MessageDialog("You've worked on that note with love and now you'll kick it? Wouldn't you like to safe?",
+							"Save changes?");
 
-				discardChangesDialog.Commands.Add(new UICommand("Yes", (cmd) => SaveNote()));
-				discardChangesDialog.Commands.Add(new UICommand("No"));
+					saveChangesDialog.Commands.Add(new UICommand("Yes", (cmd) => SaveNote()));
+					saveChangesDialog.Commands.Add(new UICommand("No"));
 
-				await discardChangesDialog.ShowAsync();
+					await saveChangesDialog.ShowAsync();
+				}
 			}
 
 			navigationService.GoBack();

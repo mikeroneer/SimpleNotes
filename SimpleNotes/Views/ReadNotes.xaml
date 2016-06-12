@@ -5,11 +5,21 @@
     xmlns:local="using:SimpleNotes.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:SimpleNotes.Converters"
     DataContext="{Binding Source={StaticResource Locator}, Path=ReadNotesViewModel}"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <converters:DateTimeToDateTimeOffsetConverter x:Key="DateConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="VisibilityConverter"/>
+    </Page.Resources>
+    
     <Page.BottomAppBar>
         <CommandBar>
+            <AppBarButton Icon="Find"
+                          Label="Find"
+                          Click="{x:Bind ViewModel.SearchForNote}"
+                          IsTabStop="False"/>
             <AppBarButton Icon="Edit"
                           Label="Edit"
                           IsEnabled="{Binding IsNoteSelected}"
@@ -24,7 +34,23 @@
     </Page.BottomAppBar>
     
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ListView ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Margin="12, 12, 12, 0" Grid.Row="0">
+            <DatePicker HorizontalAlignment="Stretch" 
+                        Date="{Binding SearchTimePeriodStart, Converter={StaticResource DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding IsSearchEnabled, Converter={StaticResource VisibilityConverter}}"/>
+            <DatePicker HorizontalAlignment="Stretch" 
+                        Date="{Binding SearchTimePeriodEnd, Converter={StaticResource DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Visibility="{Binding IsSearchEnabled, Converter={StaticResource VisibilityConverter}}"/>
+            <TextBox PlaceholderText="Search..." 
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     Visibility="{Binding IsSearchEnabled, Converter={StaticResource VisibilityConverter}}"/>
+            <TextBlock Text="No notes" Margin="12" Visibility="{Binding IsNotesEmpty, Converter={StaticResource VisibilityConverter}}"/>
+        </StackPanel>
+        <ListView Grid.Row="1" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="0, 12, 0, 12">
@@ -33,6 +59,6 @@
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>                  
+        </ListView>
     </Grid>
 </Page>

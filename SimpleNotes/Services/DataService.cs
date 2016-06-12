@@ -23,7 +23,14 @@ namespace SimpleNotes.Services
 
 		public void SetNotes(IEnumerable<Note> notesToSet)
 		{
-			notes = new List<Note>(notesToSet);
+			if (notesToSet != null)
+			{
+				notes = new List<Note>(notesToSet);
+			}
+			else
+			{
+				notes = new List<Note>();
+			}
 		}
 
 		public void SaveNote(Note note)
@@ -35,7 +42,6 @@ namespace SimpleNotes.Services
 		{
 			int index = notes.IndexOf(updatedNote);
 			notes[index].Text = updatedNote.Text;
-			//notes.First(note => notes.GetHashCode() == updatedNote.GetHashCode()).Text = "Hallo";
 		}
 
 		public void RemoveNote(Note note)
