@@ -5,15 +5,26 @@
     xmlns:local="using:SimpleNotes.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels="using:SimpleNotes.ViewModels"
+    DataContext="{Binding Source={StaticResource Locator}, Path=ReadNotesViewModel}"
     mc:Ignorable="d">
 
-    <Page.DataContext>
-        <viewModels:ReadNotesViewModel/>
-    </Page.DataContext>
-
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Edit"
+                          Label="Edit"
+                          IsEnabled="{Binding IsNoteSelected}"
+                          Click="{x:Bind ViewModel.EditSelectedNote}"
+                          IsTabStop="False"/>
+            <AppBarButton Icon="Delete" 
+                          Label="Delete"
+                          IsEnabled="{Binding IsNoteSelected}"
+                          Click="{x:Bind ViewModel.RemoveSelectedNote}"
+                          IsTabStop="False"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ListView ItemsSource="{Binding Notes}">
+        <ListView ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="0, 12, 0, 12">

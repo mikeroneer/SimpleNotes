@@ -5,15 +5,13 @@
     xmlns:local="using:SimpleNotes.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels="using:SimpleNotes.ViewModels"
-    xmlns:converters="using:SimpleNotes.Converters"
+    DataContext="{Binding Source={StaticResource Locator}, Path=SettingsViewModel}"
     mc:Ignorable="d">
 
-    <Page.DataContext>
-        <viewModels:SettingsViewModel/>
-    </Page.DataContext>
-
-    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBox Margin="10" Header="Read Notes Counter" Text="{Binding ReadNotesCounter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10">
+        <TextBox Header="Read Notes Counter" Text="{Binding NumberOfShownNotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <CheckBox Content="Show in ascending order" IsChecked="{Binding IsSortAscending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Button Content="Load from local storage" Click="{x:Bind ViewModel.LoadFromStorage}"/>
+        <Button Content="Save to local storage" Click="{x:Bind ViewModel.SaveToStorage}"/>
     </StackPanel>
 </Page>

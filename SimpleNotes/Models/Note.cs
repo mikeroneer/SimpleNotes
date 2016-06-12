@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimpleNotes.Models
 {
-	class Note
+	public class Note : IEquatable<Note>
 	{
 		public string Text { get; set; }
 
@@ -16,6 +16,11 @@ namespace SimpleNotes.Models
 		{
 			CreationDate = date;
 			Text = text;
+		}
+
+		public bool Equals(Note other)
+		{
+			return Text.Equals(other.Text) && CreationDate.Equals(other.CreationDate);
 		}
 	}
 }

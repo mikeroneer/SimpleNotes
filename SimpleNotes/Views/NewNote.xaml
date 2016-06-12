@@ -9,19 +9,15 @@
     DataContext="{Binding Source={StaticResource Locator}, Path=NewNoteViewModel}"
     mc:Ignorable="d">
 
-    <!--<Page.DataContext>
-        <viewModels:NewNoteViewModel />
-    </Page.DataContext>-->
-
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Icon="Accept" 
                           Label="Save"
-                          Command="{Binding SaveNoteCommand}"
+                          Click="{x:Bind ViewModel.SaveNote}"
                           IsTabStop="False"/>
             <AppBarButton Icon="Cancel"
                           Label="Cancel"
-                          Command="{Binding CancelCreateNoteCommand}"
+                          Click="{x:Bind ViewModel.CancelCreateNote}"
                           IsTabStop="False"/>
         </CommandBar>
     </Page.BottomAppBar>
@@ -33,7 +29,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Text="New Note" Grid.Row="0" FontSize="36"/>
+        <TextBlock Text="{Binding PageHeading}" Grid.Row="0" FontSize="36"/>
         <TextBlock Text="{Binding CurrentDate}" Grid.Row="1"/>
 
         <TextBox Grid.Row="2" Text="{Binding Path=NoteText, 

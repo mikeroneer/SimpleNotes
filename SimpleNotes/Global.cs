@@ -10,8 +10,8 @@ namespace SimpleNotes
 {
 	class Global
 	{
-		private static ObservableCollection<Note> notes = new ObservableCollection<Note>();
-		public static ObservableCollection<Note> Notes { get { return notes; } set { notes = value; } }
-		public static int NumberOfShownNotes { get; set; } = 5;
+		//public static ObservableCollection<Note> Notes { get; set; } = new ObservableCollection<Note>();
+		//public static int NumberOfShownNotes { get; set; } = 5;
+		//public static bool ShowAscendingOrder { get; set; }
 	}
 }

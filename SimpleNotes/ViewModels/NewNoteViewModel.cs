@@ -9,30 +9,27 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
+using GalaSoft.MvvmLight.Views;
+using SimpleNotes.Services;
 
 namespace SimpleNotes.ViewModels
 {
-	public class NewNoteViewModel : ViewModelBase
+	public class NewNoteViewModel : ViewModelBase, IInitializable
 	{
+		private readonly INavigationService navigationService;
+		private readonly IDataService dataService;
+
+		public string PageHeading { get; set; }
 		public string NoteText { get; set; }
-		public DateTime CurrentDate { get; set; } = DateTime.Now;
+		public DateTime CurrentDate { get; set; }
 
-		public ICommand SaveNoteCommand { get; set; }
-		public ICommand CancelCreateNoteCommand { get; set; }
+		private Mode mode;
+		private Note editNote;
 
-		public NewNoteViewModel()
+		public NewNoteViewModel(INavigationService navigationService, IDataService dataService)
 		{
-			DispatcherTimer dt = new DispatcherTimer();
-			dt.Interval = new TimeSpan(0, 0, 1);
-			dt.Tick += (sender, e) =>
-			{
-				CurrentDate = DateTime.Now;
-			};
-
-			dt.Start();
-
-			SaveNoteCommand = new RelayCommand(SaveNote);
-			CancelCreateNoteCommand = new RelayCommand(CancelCreateNote);
+			this.navigationService = navigationService;
+			this.dataService = dataService;
 
 			((App)Application.Current).OnBackRequested += (sender, e) =>
 			{
@@ -44,7 +41,35 @@ namespace SimpleNotes.ViewModels
 			};
 		}
 
-		private async void SaveNote()
+		public void Initialise(object parameter)
+		{
+			if (parameter is Note)
+			{
+				editNote = parameter as Note;
+				NoteText = editNote.Text;
+				CurrentDate = editNote.CreationDate;
+
+				mode = Mode.Edit;
+				PageHeading = "Edit Note";
+			}
+			else
+			{
+				mode = Mode.Create;
+				PageHeading = "Create Note";
+				CurrentDate = DateTime.Now;
+
+				/*DispatcherTimer dt = new DispatcherTimer();
+				dt.Interval = new TimeSpan(0, 0, 1);
+				dt.Tick += (sender, e) =>
+				{
+					CurrentDate = DateTime.Now;
+				};
+
+				dt.Start();*/
+			}
+		}
+
+		public async void SaveNote()
 		{
 			if(string.IsNullOrEmpty(NoteText))
 			{
@@ -53,8 +78,21 @@ namespace SimpleNotes.ViewModels
 			}
 			else
 			{
-				Global.Notes.Add(new Note(CurrentDate, NoteText));
+				switch (mode)
+				{
+					case Mode.Create:
+						dataService.SaveNote(new Note(CurrentDate, NoteText));
+						break;
+
+					case Mode.Edit:
+						editNote.Text = NoteText;
+						dataService.UpdateNote(editNote);
+						navigationService.GoBack();
+						break;
+				}
+				
 				NoteText = string.Empty;
+				CurrentDate = DateTime.Now;
 			}
 		}
 
@@ -64,23 +102,15 @@ namespace SimpleNotes.ViewModels
 			{
 				var discardChangesDialog = new MessageDialog("You've worked on that note with love and now you'll kick it? Wouldn't you like to safe?", "Save changes?");
 
-				discardChangesDialog.Commands.Add(new UICommand("Yes", new UICommandInvokedHandler((cmd) => SaveNote())));
+				discardChangesDialog.Commands.Add(new UICommand("Yes", (cmd) => SaveNote()));
 				discardChangesDialog.Commands.Add(new UICommand("No"));
 
 				await discardChangesDialog.ShowAsync();
 			}
 
-			GoBack();
+			navigationService.GoBack();
 		}
 
-		private void GoBack()
-		{
-			var frame = Window.Current.Content as Frame;
-
-			if (frame.CanGoBack)
-			{
-				frame.GoBack();
-			}
-		}
+		private enum Mode { Create, Edit };
 	}
 }

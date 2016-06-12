@@ -16,61 +16,48 @@ namespace SimpleNotes.ViewModels
 		private string searchText;
 		public string SearchText
 		{
-			get
-			{
-				return searchText;
-			}
+			get { return searchText; }
 			set
 			{
 				searchText = value;
-				Search(searchText);
+				Search();
 			}
 		}
 
 		private DateTime searchTimePeriodStart;
-
 		public DateTime SearchTimePeriodStart
 		{
-			get
-			{
-				return searchTimePeriodStart;
-			}
+			get { return searchTimePeriodStart; }
 			set
 			{
 				searchTimePeriodStart = value;
+				Search();
 			}
 		}
 
 		private DateTime searchTimePeriodEnd;
-
 		public DateTime SearchTimePeriodEnd
 		{
-			get
-			{
-				return searchTimePeriodEnd;
-			}
+			get { return searchTimePeriodEnd; }
 			set
 			{
 				searchTimePeriodEnd = value;
+				Search();
 			}
 		}
 
 		public SearchNoteViewModel()
 		{
-			SearchResults = new ObservableCollection<Note>();
+			SearchText = string.Empty;
 		}
 
-		private void Search(string searchValue)
+		private void Search()
 		{
-			SearchResults.Clear();
-
-			foreach(Note note in Global.Notes)
-			{
-				if(note.Text.ToLower().Contains(searchValue.ToLower()))
-				{
-					SearchResults.Add(note);
-				}
-			}
+			/*SearchResults = new ObservableCollection<Note>(Global.Notes.Where(note => 
+					note.Text.ToLower().Contains(SearchText.ToLower()) && 
+					note.CreationDate >= SearchTimePeriodStart && 
+					note.CreationDate <= searchTimePeriodEnd
+				));*/
 		}
 	}
 }

@@ -6,16 +6,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="using:SimpleNotes.ViewModels"
+    xmlns:converters="using:SimpleNotes.Converters"
     mc:Ignorable="d">
 
     <Page.DataContext>
         <viewModels:SearchNoteViewModel/>
     </Page.DataContext>
+    <Page.Resources>
+        <converters:DateTimeToDateTimeOffsetConverter x:Key="DateConverter"/>
+    </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel>
-            <DatePicker Date="{Binding SearchTimePeriodStart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <DatePicker Date="{Binding SearchTimePeriodEnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <DatePicker Date="{Binding SearchTimePeriodStart, Converter={StaticResource DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <DatePicker Date="{Binding SearchTimePeriodEnd, Converter={StaticResource DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             <ListView ItemsSource="{Binding SearchResults}">
                 <ListView.ItemTemplate>

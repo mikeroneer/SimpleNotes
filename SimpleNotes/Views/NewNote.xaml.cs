@@ -24,11 +24,17 @@ namespace SimpleNotes.Views
 	/// </summary>
 	public sealed partial class NewNote : Page
 	{
+		private NewNoteViewModel ViewModel => DataContext as NewNoteViewModel;
+
 		public NewNote()
 		{
 			this.InitializeComponent();
 		}
-	}
 
-	
+		protected override void OnNavigatedTo(NavigationEventArgs e)
+		{
+			base.OnNavigatedTo(e);
+			ViewModel.Initialise(e.Parameter);
+		}
+	}
 }
