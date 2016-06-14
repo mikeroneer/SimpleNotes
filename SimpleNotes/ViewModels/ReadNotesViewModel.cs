@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using GalaSoft.MvvmLight;
 using SimpleNotes.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Input;
-using Windows.UI.Xaml.Controls;
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using SimpleNotes.Common;
 using SimpleNotes.Services;
-using SimpleNotes.Views;
 
 namespace SimpleNotes.ViewModels
 {
@@ -25,39 +20,13 @@ namespace SimpleNotes.ViewModels
 		public bool IsNoteSelected => SelectedNote != null;
 		public bool IsNotesEmpty { get; set; }
 
-		private string searchText;
-		public string SearchText
-		{
-			get { return searchText; }
-			set
-			{
-				searchText = value;
-				LoadData();
-			}
-		}
+		public string SearchText { get; set; } = string.Empty;
 
-		private DateTime searchTimePeriodStart;
+		public DateTime? SearchTimePeriodStart { get; set; }
 
-		public DateTime SearchTimePeriodStart
-		{
-			get { return searchTimePeriodStart; }
-			set
-			{
-				searchTimePeriodStart = value;
-				LoadData();
-			}
-		}
+		public DateTime? SearchTimePeriodEnd { get; set; }
 
-		private DateTime searchTimePeriodEnd;
-		public DateTime SearchTimePeriodEnd
-		{
-			get { return searchTimePeriodEnd; }
-			set
-			{
-				searchTimePeriodEnd = value;
-				LoadData();
-			}
-		}
+		public bool IsSearchEnabled { get; set; }
 
 		public ReadNotesViewModel(INavigationService navigationService, IDataService dataService, SettingsViewModel settings)
 		{
@@ -65,24 +34,29 @@ namespace SimpleNotes.ViewModels
 			this.dataService = dataService;;
 			this.settings = settings;
 
-			SearchText = String.Empty;
-			SearchTimePeriodStart = DateTime.Now.AddYears(-1);
-			SearchTimePeriodEnd = DateTime.Now.AddDays(1);
+			PropertyChanged += (sender, args) =>
+				{
+					if (args.PropertyName == nameof(SearchText) ||
+					    args.PropertyName == nameof(SearchTimePeriodStart) ||
+					    args.PropertyName == nameof(SearchTimePeriodEnd))
+					{
+						LoadData();
+					}
+				};
 		}
 
 		public void LoadData()
 		{
-			var notesCollection = dataService.GetNotes().Take(settings.NumberOfShownNotes);
+			var notesCollection = dataService.GetNotes();
 
 			notesCollection = settings.IsSortAscending
 				? notesCollection.OrderBy(note => note.CreationDate)
 				: notesCollection.OrderByDescending(note => note.CreationDate);
 
-			notesCollection = notesCollection.Where(note =>
-					note.Text.ToLower().Contains(SearchText.ToLower()) &&
-					note.CreationDate >= SearchTimePeriodStart &&
-					note.CreationDate <= searchTimePeriodEnd
-				);
+			notesCollection = notesCollection.Where(note => (!SearchTimePeriodStart.HasValue || note.CreationDate >= SearchTimePeriodStart)
+												&& (!SearchTimePeriodEnd.HasValue || note.CreationDate <= SearchTimePeriodEnd.Value.Date.AddDays(1))
+												&& (string.IsNullOrEmpty(SearchText) || note.Text.ToLower().Contains(SearchText.ToLower()))
+				).Take(settings.NumberOfShownNotes);
 
 			Notes = new ObservableCollection<Note>(notesCollection);
 			IsNotesEmpty = Notes.Count == 0;
@@ -99,18 +73,9 @@ namespace SimpleNotes.ViewModels
 			LoadData();
 		}
 
-		public bool IsSearchEnabled { get; set; }
-
-		public void SearchForNote()
+		public void ToggleEnableSearch()
 		{
-			if (IsSearchEnabled)
-			{
-				IsSearchEnabled = false;
-			}
-			else
-			{
-				IsSearchEnabled = true;
-			}
+			IsSearchEnabled = !IsSearchEnabled;
 		}
 	}
 }

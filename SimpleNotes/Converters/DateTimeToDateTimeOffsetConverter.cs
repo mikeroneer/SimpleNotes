@@ -18,7 +18,7 @@ namespace SimpleNotes.Converters
 			}
 			else
 			{
-				return DateTimeOffset.MinValue;
+				return null;
 			}
 		}
 
@@ -31,7 +31,7 @@ namespace SimpleNotes.Converters
 			}
 			else
 			{
-				return DateTime.MinValue;
+				return null;
 			}
 		}
 	}

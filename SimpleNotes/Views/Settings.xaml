@@ -10,7 +10,7 @@
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10">
         <TextBox Header="Read Notes Counter" Text="{Binding NumberOfShownNotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <CheckBox Content="Show in ascending order" IsChecked="{Binding IsSortAscending, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <CheckBox Content="Show in ascending order" IsChecked="{Binding IsSortAscending, Mode=TwoWay}" />
         <Button Content="Load from local storage" Click="{x:Bind ViewModel.LoadFromStorage}"/>
         <Button Content="Save to local storage" Click="{x:Bind ViewModel.SaveToStorage}"/>
     </StackPanel>

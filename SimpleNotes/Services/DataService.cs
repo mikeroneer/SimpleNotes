@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using SimpleNotes.Models;
 
 namespace SimpleNotes.Services
@@ -23,14 +19,7 @@ namespace SimpleNotes.Services
 
 		public void SetNotes(IEnumerable<Note> notesToSet)
 		{
-			if (notesToSet != null)
-			{
-				notes = new List<Note>(notesToSet);
-			}
-			else
-			{
-				notes = new List<Note>();
-			}
+			notes = notesToSet != null ? new List<Note>(notesToSet) : new List<Note>();
 		}
 
 		public void SaveNote(Note note)

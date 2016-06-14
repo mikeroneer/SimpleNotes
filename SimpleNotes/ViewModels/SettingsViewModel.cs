@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using GalaSoft.MvvmLight;
 using SimpleNotes.Models;
 using SimpleNotes.Services;
 
 namespace SimpleNotes.ViewModels
 {
-	public class SettingsViewModel
+	public class SettingsViewModel : ViewModelBase
 	{
 		private readonly IStorageService storageService;
 		private readonly IDataService dataService;
 
-		public int NumberOfShownNotes { get; set; }
+		public int NumberOfShownNotes { get; set; } = 5;
 		public bool IsSortAscending { get; set; }
 
 		public SettingsViewModel(IDataService dataService, IStorageService storageService)
 		{
 			this.storageService = storageService;
 			this.dataService = dataService;
-			LoadFromStorage();
 		}
 
 		public void SaveToStorage()

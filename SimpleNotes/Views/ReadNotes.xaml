@@ -18,7 +18,7 @@
         <CommandBar>
             <AppBarButton Icon="Find"
                           Label="Find"
-                          Click="{x:Bind ViewModel.SearchForNote}"
+                          Click="{x:Bind ViewModel.ToggleEnableSearch}"
                           IsTabStop="False"/>
             <AppBarButton Icon="Edit"
                           Label="Edit"
@@ -39,15 +39,24 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Margin="12, 12, 12, 0" Grid.Row="0">
-            <DatePicker HorizontalAlignment="Stretch" 
-                        Date="{Binding SearchTimePeriodStart, Converter={StaticResource DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Visibility="{Binding IsSearchEnabled, Converter={StaticResource VisibilityConverter}}"/>
-            <DatePicker HorizontalAlignment="Stretch" 
-                        Date="{Binding SearchTimePeriodEnd, Converter={StaticResource DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                        Visibility="{Binding IsSearchEnabled, Converter={StaticResource VisibilityConverter}}"/>
-            <TextBox PlaceholderText="Search..." 
-                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                     Visibility="{Binding IsSearchEnabled, Converter={StaticResource VisibilityConverter}}"/>
+            <Grid Visibility="{Binding IsSearchEnabled, Converter={StaticResource VisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <CalendarDatePicker Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch"
+                        Date="{x:Bind ViewModel.SearchTimePeriodStart, Converter={StaticResource DateConverter}, Mode=TwoWay}"/>
+                <CalendarDatePicker Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"
+                        Date="{x:Bind ViewModel.SearchTimePeriodEnd, Converter={StaticResource DateConverter}, Mode=TwoWay}" />
+                <TextBox PlaceholderText="Search..." Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            </Grid>
+            
             <TextBlock Text="No notes" Margin="12" Visibility="{Binding IsNotesEmpty, Converter={StaticResource VisibilityConverter}}"/>
         </StackPanel>
         <ListView Grid.Row="1" ItemsSource="{Binding Notes}" SelectedItem="{Binding SelectedNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
