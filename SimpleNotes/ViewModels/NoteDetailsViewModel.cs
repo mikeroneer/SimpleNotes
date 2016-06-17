@@ -12,13 +12,12 @@ namespace SimpleNotes.ViewModels
 	{
 		private readonly INavigationService navigationService;
 		private readonly IDataService dataService;
+		private Mode mode;
+		private Note editNote;
 
 		public string PageHeading { get; set; }
 		public string NoteText { get; set; }
 		public DateTime CurrentDate { get; set; }
-
-		private Mode mode;
-		private Note editNote;
 
 		public NoteDetailsViewModel(INavigationService navigationService, IDataService dataService)
 		{

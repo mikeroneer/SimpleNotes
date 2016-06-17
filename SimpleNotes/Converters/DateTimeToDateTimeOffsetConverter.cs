@@ -24,15 +24,8 @@ namespace SimpleNotes.Converters
 
 		public object ConvertBack(object value, Type targetType, object parameter, string language)
 		{
-			if(value is DateTimeOffset)
-			{
-				DateTimeOffset dto = (DateTimeOffset)value;
-				return dto.DateTime;
-			}
-			else
-			{
-				return null;
-			}
+			DateTimeOffset? dto = value as DateTimeOffset?;
+			return dto?.DateTime;
 		}
 	}
 }
