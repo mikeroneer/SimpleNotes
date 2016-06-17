@@ -67,17 +67,17 @@ namespace SimpleNotes.ViewModels
 				{
 					case Mode.Create:
 						dataService.SaveNote(new Note(CurrentDate, NoteText));
+						NoteText = string.Empty;
+						CurrentDate = DateTime.Now;
 						break;
 
 					case Mode.Edit:
 						editNote.Text = NoteText;
 						dataService.UpdateNote(editNote);
+						NoteText = string.Empty;
 						navigationService.GoBack();
 						break;
 				}
-				
-				NoteText = string.Empty;
-				CurrentDate = DateTime.Now;
 			}
 		}
 
@@ -98,6 +98,7 @@ namespace SimpleNotes.ViewModels
 				}
 			}
 
+			NoteText = string.Empty;
 			navigationService.GoBack();
 		}
 

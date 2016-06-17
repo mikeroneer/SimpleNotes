@@ -18,7 +18,7 @@ namespace SimpleNotes.ViewModels
 		public ObservableCollection<Note> Notes { get; set; }
 		public Note SelectedNote { get; set; }
 		public bool IsNoteSelected => SelectedNote != null;
-		public bool IsNotesEmpty { get; set; }
+		public bool IsNotesEmpty => Notes.Count == 0;
 
 		public string SearchText { get; set; } = string.Empty;
 
@@ -59,7 +59,6 @@ namespace SimpleNotes.ViewModels
 				).Take(settings.NumberOfShownNotes);
 
 			Notes = new ObservableCollection<Note>(notesCollection);
-			IsNotesEmpty = Notes.Count == 0;
 		}
 
 		public void EditSelectedNote()
