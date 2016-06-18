@@ -1,9 +1,15 @@
 ﻿using GalaSoft.MvvmLight;
 using SimpleNotes.Models;
 using System;
+using System.Collections.ObjectModel;
+using Windows.Devices.Geolocation;
+using Windows.Foundation;
+using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Maps;
 using GalaSoft.MvvmLight.Views;
+using SimpleNotes.Common;
 using SimpleNotes.Services;
 
 namespace SimpleNotes.ViewModels
@@ -14,10 +20,14 @@ namespace SimpleNotes.ViewModels
 		private readonly IDataService dataService;
 		private Mode mode;
 		private Note editNote;
+		private static Geopoint startLocation = new Geopoint(new BasicGeoposition() {Latitude = 48.368475, Longitude = 14.513486 });
 
 		public string PageHeading { get; set; }
 		public string NoteText { get; set; }
 		public DateTime CurrentDate { get; set; }
+
+		public string MapServiceToken => Config.MapServiceToken;
+		public Geopoint CurrentPosition { get; set; } = startLocation;
 
 		public NoteDetailsViewModel(INavigationService navigationService, IDataService dataService)
 		{
@@ -51,6 +61,8 @@ namespace SimpleNotes.ViewModels
 				PageHeading = "Create Note";
 				CurrentDate = DateTime.Now;
 			}
+
+			GetCurrentLocation();
 		}
 
 		public async void SaveNote()
@@ -65,7 +77,18 @@ namespace SimpleNotes.ViewModels
 				switch (mode)
 				{
 					case Mode.Create:
-						dataService.SaveNote(new Note(CurrentDate, NoteText));
+						var noteToSave = new Note(CurrentDate, NoteText);
+
+						// if the current position is found, add it to the note
+						if (!CurrentPosition.Equals(startLocation))
+						{
+							noteToSave.CreationPosition = CurrentPosition;
+						}
+
+						// save note
+						dataService.SaveNote(noteToSave);
+
+						// clear page
 						NoteText = string.Empty;
 						CurrentDate = DateTime.Now;
 						break;
@@ -99,6 +122,18 @@ namespace SimpleNotes.ViewModels
 
 			NoteText = string.Empty;
 			navigationService.GoBack();
+		}
+
+		public async void GetCurrentLocation()
+		{
+			var access = await Geolocator.RequestAccessAsync();
+
+			if (access.Equals(GeolocationAccessStatus.Allowed))
+			{
+				var geolocator = new Geolocator();
+				var geopositon = await geolocator.GetGeopositionAsync();
+				CurrentPosition = geopositon.Coordinate.Point;
+			}
 		}
 
 		private enum Mode { Create, Edit };

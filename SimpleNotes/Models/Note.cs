@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.Devices.Geolocation;
 
 namespace SimpleNotes.Models
 {
@@ -7,6 +8,8 @@ namespace SimpleNotes.Models
 		public string Text { get; set; }
 
 		public DateTime CreationDate { get; set; }
+
+		public Geopoint CreationPosition { get; set; }
 
 		public Note(DateTime date, string text)
 		{
