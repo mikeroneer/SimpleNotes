@@ -24,7 +24,7 @@ namespace SimpleNotes.ViewModels
 			SimpleIoc.Default.Register<SettingsViewModel>();
 
 			SimpleIoc.Default.Register(RegisterNavigationService);
-			SimpleIoc.Default.Register<IDataService, DataService>();
+			SimpleIoc.Default.Register<IDataService, CloudDataService>();
 			SimpleIoc.Default.Register<IStorageService, LocalStorageService>();
 		}
 

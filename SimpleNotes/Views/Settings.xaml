@@ -2,7 +2,6 @@
     x:Class="SimpleNotes.Views.Settings"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:SimpleNotes.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     DataContext="{Binding Source={StaticResource Locator}, Path=SettingsViewModel}"
@@ -11,7 +10,9 @@
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="10">
         <TextBox Header="Read Notes Counter" Text="{Binding NumberOfShownNotes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <CheckBox Content="Show in ascending order" IsChecked="{Binding IsSortAscending, Mode=TwoWay}" />
-        <Button Content="Load from local storage" Click="{x:Bind ViewModel.LoadFromStorage}"/>
-        <Button Content="Save to local storage" Click="{x:Bind ViewModel.SaveToStorage}"/>
+        <Grid>
+            <Button Content="Load settings" Click="{x:Bind ViewModel.LoadFromStorage}" HorizontalAlignment="Left"/>
+            <Button Content="Save settings" Click="{x:Bind ViewModel.SaveToStorage}" HorizontalAlignment="Right"/>
+        </Grid>
     </StackPanel>
 </Page>

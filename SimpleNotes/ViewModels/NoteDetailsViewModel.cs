@@ -1,13 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
 using SimpleNotes.Models;
 using System;
-using System.Collections.ObjectModel;
 using Windows.Devices.Geolocation;
-using Windows.Foundation;
-using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls.Maps;
 using GalaSoft.MvvmLight.Views;
 using SimpleNotes.Common;
 using SimpleNotes.Services;
@@ -51,6 +47,7 @@ namespace SimpleNotes.ViewModels
 				editNote = parameter as Note;
 				NoteText = editNote.Text;
 				CurrentDate = editNote.CreationDate;
+				CurrentPosition = new Geopoint(new BasicGeoposition() {Latitude = editNote.Latitude, Longitude = editNote.Longitude});
 
 				mode = Mode.Edit;
 				PageHeading = "Edit Note";
@@ -60,9 +57,8 @@ namespace SimpleNotes.ViewModels
 				mode = Mode.Create;
 				PageHeading = "Create Note";
 				CurrentDate = DateTime.Now;
+				GetCurrentLocation();
 			}
-
-			GetCurrentLocation();
 		}
 
 		public async void SaveNote()
@@ -82,11 +78,13 @@ namespace SimpleNotes.ViewModels
 						// if the current position is found, add it to the note
 						if (!CurrentPosition.Equals(startLocation))
 						{
-							noteToSave.CreationPosition = CurrentPosition;
+							//noteToSave.CreationPosition = CurrentPosition;
+							noteToSave.Latitude = CurrentPosition.Position.Latitude;
+							noteToSave.Longitude = CurrentPosition.Position.Longitude;
 						}
 
 						// save note
-						dataService.SaveNote(noteToSave);
+						await dataService.SaveNote(noteToSave);
 
 						// clear page
 						NoteText = string.Empty;
@@ -95,7 +93,7 @@ namespace SimpleNotes.ViewModels
 
 					case Mode.Edit:
 						editNote.Text = NoteText;
-						dataService.UpdateNote(editNote);
+						await dataService.UpdateNote(editNote);
 						NoteText = string.Empty;
 						navigationService.GoBack();
 						break;

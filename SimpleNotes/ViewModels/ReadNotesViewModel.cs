@@ -18,7 +18,7 @@ namespace SimpleNotes.ViewModels
 		public ObservableCollection<Note> Notes { get; set; }
 		public Note SelectedNote { get; set; }
 		public bool IsNoteSelected => SelectedNote != null;
-		public bool IsNotesEmpty => Notes.Count == 0;
+		public bool IsNotesEmpty => Notes?.Count == 0;
 
 		public string SearchText { get; set; } = string.Empty;
 
@@ -45,9 +45,9 @@ namespace SimpleNotes.ViewModels
 				};
 		}
 
-		public void LoadData()
+		public async void LoadData()
 		{
-			var notesCollection = dataService.GetNotes();
+			var notesCollection = await dataService.GetNotes();
 
 			notesCollection = settings.IsSortAscending
 				? notesCollection.OrderBy(note => note.CreationDate)

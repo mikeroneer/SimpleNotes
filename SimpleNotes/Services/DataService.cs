@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using SimpleNotes.Models;
+using SimpleNotes.ViewModels;
 
 namespace SimpleNotes.Services
 {
@@ -12,28 +14,33 @@ namespace SimpleNotes.Services
 			notes = new List<Note>();
 		}
 
-		public IEnumerable<Note> GetNotes()
+		public async Task<IEnumerable<Note>> GetNotes()
 		{
 			return notes;
 		}
 
-		public void SetNotes(IEnumerable<Note> notesToSet)
+		public Task AddNote(Note note)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public async Task SetNotes(IEnumerable<Note> notesToSet)
 		{
 			notes = notesToSet != null ? new List<Note>(notesToSet) : new List<Note>();
 		}
 
-		public void SaveNote(Note note)
+		public async Task SaveNote(Note note)
 		{
 			notes.Add(note);
 		}
 
-		public void UpdateNote(Note updatedNote)
+		public async Task UpdateNote(Note updatedNote)
 		{
 			int index = notes.IndexOf(updatedNote);
 			notes[index].Text = updatedNote.Text;
 		}
 
-		public void RemoveNote(Note note)
+		public async Task RemoveNote(Note note)
 		{
 			notes.Remove(note);
 		}
