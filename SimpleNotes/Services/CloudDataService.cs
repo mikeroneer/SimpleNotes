@@ -30,18 +30,10 @@ namespace SimpleNotes.Services
 			return notes;
 		}
 
-		public async Task AddNote(Note note)
-		{
-			
-		}
-
 		public async Task SaveNote(Note note)
 		{
 			var json = JsonConvert.SerializeObject(note);
-			var response = await client.PostAsync(Uri, new JsonContent(json));
-			var s = response.Content;
-
-			var x = response;
+			await client.PostAsync(Uri, new JsonContent(json));
 		}
 
 		public async Task RemoveNote(Note note)
@@ -52,9 +44,7 @@ namespace SimpleNotes.Services
 		public async Task UpdateNote(Note note)
 		{
 			var json = JsonConvert.SerializeObject(note);
-			var response = await client.PutAsync($"{Uri}/{note.Id}", new JsonContent(json));
-
-			var x = response;
+			await client.PutAsync($"{Uri}/{note.Id}", new JsonContent(json));
 		}
 
 		public Task SetNotes(IEnumerable<Note> notes)

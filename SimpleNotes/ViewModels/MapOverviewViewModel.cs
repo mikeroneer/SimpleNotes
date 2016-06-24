@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using SimpleNotes.Common;
 using SimpleNotes.Models;
@@ -29,6 +30,7 @@ namespace SimpleNotes.ViewModels
 			var notes = await dataService.GetNotesAsync();
 
 			AllNotes = new ObservableCollection<Note>(notes);
+			Messenger.Default.Send("zoomToFit");
 		}
 
 		public void OnPushpinTapped(Note note)

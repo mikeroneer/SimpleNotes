@@ -1,9 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Windows.Devices.Geolocation;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
-using GalaSoft.MvvmLight.Views;
-using SimpleNotes.Common;
+using GalaSoft.MvvmLight.Messaging;
 using SimpleNotes.ViewModels;
 
 namespace SimpleNotes.Views
@@ -15,6 +18,8 @@ namespace SimpleNotes.Views
 		public MapOverview()
 		{
 			this.InitializeComponent();
+
+			Messenger.Default.Register<string>(this, ZoomToFit);
 		}
 
 		protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -30,6 +35,14 @@ namespace SimpleNotes.Views
 			var viewElement = (Grid) sender;
 			var note = ViewModel.AllNotes.First(n => n.Id.Equals(viewElement.Tag));
 			ViewModel.OnPushpinTapped(note);
+		}
+
+		private async void ZoomToFit(string message)
+		{
+			if (message != "zoomToFit") return;
+
+			var box = GeoboundingBox.TryCompute(ViewModel.AllNotes.Select(n => n.GeoPoint.Position));
+			await Map.TrySetViewBoundsAsync(box, new Thickness(10), MapAnimationKind.Linear);
 		}
 	}
 }

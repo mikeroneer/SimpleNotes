@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SimpleNotes.Models;
-using SimpleNotes.ViewModels;
 
 namespace SimpleNotes.Services
 {
@@ -17,11 +16,6 @@ namespace SimpleNotes.Services
 		public async Task<IEnumerable<Note>> GetNotesAsync()
 		{
 			return notes;
-		}
-
-		public Task AddNote(Note note)
-		{
-			throw new System.NotImplementedException();
 		}
 
 		public async Task SetNotes(IEnumerable<Note> notesToSet)

@@ -7,7 +7,6 @@ namespace SimpleNotes.Services
 	public interface IDataService
 	{
 		Task<IEnumerable<Note>> GetNotesAsync();
-		Task AddNote(Note note);
 		Task SaveNote(Note note);
 		Task UpdateNote(Note note);
 		Task RemoveNote(Note note);
