@@ -55,9 +55,10 @@
             <TextBlock Grid.Row="1" Text="{Binding CurrentDate}" />
 
             <TextBox Grid.Row="2" Text="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-			TextWrapping="Wrap"
-			Margin="0, 4, 0, 0"
-			PlaceholderText="You wanna take a note? Put it there. :)"/>
+			        TextWrapping="Wrap"
+                    MaxWidth="480"
+			        Margin="0, 4, 0, 0"
+			        PlaceholderText="You wanna take a note? Put it there. :)"/>
         </Grid>
         
         <Maps:MapControl x:Name="MapControl"

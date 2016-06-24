@@ -14,7 +14,7 @@ namespace SimpleNotes.Services
 			notes = new List<Note>();
 		}
 
-		public async Task<IEnumerable<Note>> GetNotes()
+		public async Task<IEnumerable<Note>> GetNotesAsync()
 		{
 			return notes;
 		}

@@ -10,7 +10,7 @@ namespace SimpleNotes.ViewModels
 
 		public OverviewViewModel()
 		{
-			MenuItems = new ObservableCollection<string> { "Create Note", "Read Notes", "Settings"};
+			MenuItems = new ObservableCollection<string> { "Create Note", "Read Notes", "Map Overview", "Settings"};
 		}
 	}
 }

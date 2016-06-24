@@ -23,7 +23,7 @@ namespace SimpleNotes.Services
 			this.settings = settings;
 		}
 
-		public async Task<IEnumerable<Note>> GetNotes()
+		public async Task<IEnumerable<Note>> GetNotesAsync()
 		{
 			var json = await client.GetStringAsync(Uri);
 			var notes = JsonConvert.DeserializeObject<IEnumerable<Note>>(json);

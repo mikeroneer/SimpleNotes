@@ -26,6 +26,10 @@ namespace SimpleNotes
 						Frame.Navigate(typeof(ReadNotes));
 						break;
 
+					case "Map Overview":
+						Frame.Navigate(typeof(MapOverview));
+						break;
+
 					case "Settings":
 						Frame.Navigate(typeof(Settings));
 						break;

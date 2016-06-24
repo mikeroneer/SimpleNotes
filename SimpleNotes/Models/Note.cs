@@ -22,6 +22,9 @@ namespace SimpleNotes.Models
 
 		public double Longitude { get; set; }
 
+		public Geopoint GeoPoint => new Geopoint(new BasicGeoposition() { Latitude = Latitude, Longitude = Longitude});
+
+		// empty constructor for json decoding
 		public Note()
 		{
 			

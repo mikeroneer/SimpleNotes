@@ -109,11 +109,15 @@
     <Compile Include="Services\IInitializable.cs" />
     <Compile Include="Services\IStorageService.cs" />
     <Compile Include="Services\LocalStorageService.cs" />
+    <Compile Include="ViewModels\MapOverviewViewModel.cs" />
     <Compile Include="ViewModels\NoteDetailsViewModel.cs" />
     <Compile Include="ViewModels\OverviewViewModel.cs" />
     <Compile Include="ViewModels\ReadNotesViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Views\MapOverview.xaml.cs">
+      <DependentUpon>MapOverview.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NoteDetails.xaml.cs">
       <DependentUpon>NoteDetails.xaml</DependentUpon>
     </Compile>
@@ -136,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\mikeroneer-logo.jpg" />
+    <Content Include="Assets\pin.png" />
     <Content Include="FodyWeavers.xml" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -151,6 +156,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\MapOverview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NoteDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

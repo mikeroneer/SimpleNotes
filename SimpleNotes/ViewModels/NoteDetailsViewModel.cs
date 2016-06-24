@@ -73,15 +73,11 @@ namespace SimpleNotes.ViewModels
 				switch (mode)
 				{
 					case Mode.Create:
-						var noteToSave = new Note(CurrentDate, NoteText);
-
-						// if the current position is found, add it to the note
-						if (!CurrentPosition.Equals(startLocation))
+						var noteToSave = new Note(CurrentDate, NoteText)
 						{
-							//noteToSave.CreationPosition = CurrentPosition;
-							noteToSave.Latitude = CurrentPosition.Position.Latitude;
-							noteToSave.Longitude = CurrentPosition.Position.Longitude;
-						}
+							Latitude = CurrentPosition.Position.Latitude,
+							Longitude = CurrentPosition.Position.Longitude
+						};
 
 						// save note
 						await dataService.SaveNote(noteToSave);

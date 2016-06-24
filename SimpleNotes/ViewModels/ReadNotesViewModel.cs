@@ -47,7 +47,7 @@ namespace SimpleNotes.ViewModels
 
 		public async void LoadData()
 		{
-			var notesCollection = await dataService.GetNotes();
+			var notesCollection = await dataService.GetNotesAsync();
 
 			notesCollection = settings.IsSortAscending
 				? notesCollection.OrderBy(note => note.CreationDate)
@@ -66,9 +66,12 @@ namespace SimpleNotes.ViewModels
 			navigationService.NavigateTo(Navigation.NoteDetails, SelectedNote);
 		}
 
-		public void RemoveSelectedNote()
+		public async void RemoveSelectedNote()
 		{
-			dataService.RemoveNote(SelectedNote);
+			// wait until note is removed
+			await dataService.RemoveNote(SelectedNote);
+
+			// then reload list
 			LoadData();
 		}
 

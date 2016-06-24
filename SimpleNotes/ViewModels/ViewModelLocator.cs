@@ -14,6 +14,7 @@ namespace SimpleNotes.ViewModels
 		public NoteDetailsViewModel NewNoteViewModel => ServiceLocator.Current.GetInstance<NoteDetailsViewModel>();
 		public ReadNotesViewModel ReadNotesViewModel => ServiceLocator.Current.GetInstance<ReadNotesViewModel>();
 		public SettingsViewModel SettingsViewModel => ServiceLocator.Current.GetInstance<SettingsViewModel>();
+		public MapOverviewViewModel MapOverviewViewModel => ServiceLocator.Current.GetInstance<MapOverviewViewModel>();
 
 		static ViewModelLocator()
 		{
@@ -22,6 +23,7 @@ namespace SimpleNotes.ViewModels
 			SimpleIoc.Default.Register<NoteDetailsViewModel>();
 			SimpleIoc.Default.Register<ReadNotesViewModel>();
 			SimpleIoc.Default.Register<SettingsViewModel>();
+			SimpleIoc.Default.Register<MapOverviewViewModel>();
 
 			SimpleIoc.Default.Register(RegisterNavigationService);
 			SimpleIoc.Default.Register<IDataService, CloudDataService>();
