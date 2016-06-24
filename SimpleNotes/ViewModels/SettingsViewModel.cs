@@ -24,7 +24,6 @@ namespace SimpleNotes.ViewModels
 		{
 			storageService.Write(nameof(NumberOfShownNotes), NumberOfShownNotes);
 			storageService.Write(nameof(IsSortAscending), IsSortAscending);
-			storageService.Write("notes", dataService.GetNotesAsync().Result);
 		}
 
 		public void LoadFromStorage()
