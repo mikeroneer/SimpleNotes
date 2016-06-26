@@ -14,5 +14,6 @@
             <Button Content="Load settings" Click="{x:Bind ViewModel.LoadFromStorage}" HorizontalAlignment="Left"/>
             <Button Content="Save settings" Click="{x:Bind ViewModel.SaveToStorage}" HorizontalAlignment="Right"/>
         </Grid>
+        <TextBox Margin="0, 10, 0, 0" Header="Tendant ID" Text="{Binding TenantId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
     </StackPanel>
 </Page>
